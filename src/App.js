@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Make sure your CSS file is correctly linked
+import './App.css';
 
 const teams = [
     {
@@ -47,89 +47,131 @@ const teams = [
 ];
 
 const FixturePrediction = () => {
-    const [teamsData, setTeamsData] = useState(teams);
+    // Enhanced initialization of teamsData to include originalPoints
+    const [teamsData, setTeamsData] = useState(teams.map(team => ({
+        ...team,
+        originalPoints: team.currentPoints, // Preserve the original points
+        fixtures: team.fixtures.map(fixture => ({
+            ...fixture,
+            result: "" // Initialize all fixture results to an empty string
+        })),
+    })));
+
     const [winnerMessage, setWinnerMessage] = useState('');
 
-    // This function updates the result for a fixture and recalculates the points
+    useEffect(() => {
+        // This useEffect is used for determining the winner once all predictions are made
+        const allPredicted = teamsData.every(team => team.fixtures.every(fixture => fixture.result));
+        if (allPredicted) {
+            const winner = teamsData.reduce((acc, team) => {
+                const teamPoints = team.currentPoints + team.fixtures.reduce((acc, fixture) => {
+                    if (fixture.result === 'win') return acc + 3;
+                    if (fixture.result === 'draw') return acc + 1;
+                    if (fixture.result === 'lose') return acc;
+                    return acc;
+                }, 0);
+                return teamPoints > acc.totalPoints ? { name: team.name, totalPoints: teamPoints } : acc;
+            }, { name: '', totalPoints: 0 });
+            setWinnerMessage(`You have picked ${winner.name} to win the 2023/2024 Premier League title!`);
+        }
+    }, [teamsData]);
+
     const updatePointsAndResult = (teamName, fixtureIndex, newResult) => {
-        const newTeamsData = teamsData.map(team => {
+        setTeamsData(teamsData.map(team => {
             if (team.name === teamName) {
                 const newFixtures = [...team.fixtures];
                 newFixtures[fixtureIndex] = { ...newFixtures[fixtureIndex], result: newResult };
 
-                // Calculate points from results
-                const additionalPoints = newFixtures.reduce((acc, fixture) => {
+                // Recalculate only the points gained from predictions
+                const pointsFromPredictions = newFixtures.reduce((acc, fixture) => {
                     if (fixture.result === 'win') return acc + 3;
                     if (fixture.result === 'draw') return acc + 1;
                     return acc;
                 }, 0);
 
-                return { ...team, fixtures: newFixtures, currentPoints: team.originalPoints + additionalPoints };
+                // Do not add to originalPoints directly; keep currentPoints updated separately if needed
+                return { ...team, fixtures: newFixtures, currentPoints: pointsFromPredictions + team.originalPoints };
             }
             return team;
+        }));
+    };
+
+    const resetPredictions = () => {
+        const resetTeamsData = teamsData.map(team => {
+            // Reset each team's fixtures and points
+            const resetFixtures = team.fixtures.map(fixture => ({
+                ...fixture,
+                result: "" // Clear the prediction result
+            }));
+
+            let resetPoints = team.currentPoints;
+            // Hard-code reset of points tally
+            if (team.name === "Manchester City") resetPoints = 64;
+            else if (team.name === "Liverpool") resetPoints = 67;
+            else if (team.name === "Arsenal") resetPoints = 65;
+
+            return {
+                ...team,
+                fixtures: resetFixtures,
+                currentPoints: resetPoints // Set to the original tally
+            };
         });
-
-        setTeamsData(newTeamsData);
-        checkAndUpdateWinner(newTeamsData);
+        setTeamsData(resetTeamsData);
+        setWinnerMessage(''); // Optionally clear the winner message
     };
 
-    // Dynamically check and update the winner after each prediction change
-    const checkAndUpdateWinner = (teamsData) => {
-        const allPredicted = teamsData.every(team => team.fixtures.every(fixture => fixture.result));
-        if (allPredicted) {
-            const winner = teamsData.reduce((acc, team) => team.currentPoints > acc.currentPoints ? team : acc, teamsData[0]);
-            setWinnerMessage(`You have picked ${winner.name} to win the Premier League title!`);
-        }
-    };
 
-    useEffect(() => {
-        // Initialize originalPoints for accurate recalculations
-        setTeamsData(teamsData.map(team => ({
-            ...team,
-            originalPoints: team.currentPoints
-        })));
-    }, []);
 
-// Define buttonStyle function here
-    const buttonStyle = (predictedResult, currentResult) => ({
+    // Function to dynamically set button styles based on the prediction result
+    const getButtonStyle = (isPredicted, result) => ({
         padding: '10px 20px',
-        fontSize: '16px',
-        borderRadius: '20px',
-        cursor: 'pointer',
         margin: '5px',
-        backgroundColor: predictedResult === currentResult ? {
-            'win': 'green',
-            'draw': 'yellow',
-            'lose': 'red'
-        }[predictedResult] : '#f0f0f0', // Default background color if no result is matched
-        color: predictedResult === currentResult ? 'white' : 'black',
+        borderRadius: '20px', // Makes buttons rounded
+        cursor: 'pointer',
+        backgroundColor: isPredicted ? {
+            win: 'green',
+            draw: 'yellow',
+            lose: 'red',
+        }[result] : 'lightgrey', // Default color if no prediction has been made
+        color: 'black',
+        border: 'none',
     });
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-            {teamsData.map((team, index) => (
-                <div key={index} style={{ margin: 20 }}>
-                    <h2>{team.name} (Points: {team.currentPoints + team.additionalPoints})</h2>
-                    {team.fixtures.map((fixture, fIndex) => (
-                        <div key={fIndex} style={{ marginBottom: 10 }}>
-                            <p>{fixture.opponent} ({fixture.venue})</p>
-                            {['win', 'draw', 'lose'].map(result => (
-                                <button
-                                    key={result}
-                                    style={buttonStyle(fixture.result, result)}
-                                    onClick={() => updatePointsAndResult(team.name, fIndex, result)}
-                                >
-                                    {result.charAt(0).toUpperCase() + result.slice(1)}
-                                </button>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            ))}
-            {winnerMessage && <div style={{ marginTop: '20px', fontSize: '24px', color: 'green' }}>{winnerMessage}</div>}
+        <div>
+            <button
+                onClick={resetPredictions}
+                style={{ position: 'fixed', top: 50, left: 50, padding: '15px 30px', fontSize: '18px', cursor: 'pointer', borderRadius: '15px', zIndex: 1000,  backgroundColor: '#007bff', // Optional: Change background color
+                    color: 'white', // Optional: Change text color
+                    border: 'none', }}>
+                Reset Predictions
+            </button>
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', marginTop: '20px' }}>
+                {teamsData.map((team, index) => (
+                    <div key={index} style={{ margin: 20 }}>
+                        <h2>{team.name} (Points: {team.currentPoints})</h2>
+                        {team.fixtures.map((fixture, fIndex) => (
+                            <div key={fIndex} style={{ marginBottom: 10 }}>
+                                <p>{fixture.opponent} ({fixture.venue})</p>
+                                {['win', 'draw', 'lose'].map(result => (
+                                    <button
+                                        key={result}
+                                        style={getButtonStyle(fixture.result === result, result)}
+                                        onClick={() => updatePointsAndResult(team.name, fIndex, result)}
+                                    >
+                                        {result.charAt(0).toUpperCase() + result.slice(1)}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                ))}
+                {winnerMessage && <div style={{ marginTop: '20px', fontSize: '24px', color: 'green' }}>{winnerMessage}</div>}
+            </div>
         </div>
     );
-};
+
+}
 
 function App() {
     return (
@@ -143,4 +185,3 @@ function App() {
 }
 
 export default App;
-
