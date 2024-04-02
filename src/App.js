@@ -88,6 +88,7 @@ function Modal({ children, onClose }) {
                     border: 'none',
                     borderRadius: '3px',
                     cursor: 'pointer',
+                    fontWeight: 'bold'
                 }}>Close</button>
             </div>
         </div>
@@ -256,7 +257,7 @@ const FixturePrediction = () => {
             </div>
             {isModalOpen && (
                 <Modal onClose={() => setIsModalOpen(false)}>
-                    <div style={{ fontSize: '20px', color: 'black', fontWeight: 'bold' }}>{winnerMessage}</div>
+                    <div style={{ fontSize: '30px', color: 'black', fontWeight: 'bold' }}>{winnerMessage}</div>
                 </Modal>
             )}
 
@@ -269,7 +270,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <img src="/predictorlogo.png" alt="Predictor Logo" style={{ width: '200px', height: 'auto', verticalAlign: 'middle', marginTop: '20px' }} />
-                <h1 style={{ display: 'inline', marginLeft: '10px', verticalAlign: 'middle' }}>FLAMEO PREDICTOR</h1>
+                <h1 style={{ display: 'inline', marginLeft: '10px', marginBottom: '25px', verticalAlign: 'middle'}}>FLAMEO PREDICTOR</h1>
             </header>
             <FixturePrediction />
 
