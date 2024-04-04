@@ -6,10 +6,9 @@ import './App.css';
 const teams = [
     {
         name: "Manchester City",
-        currentPoints: 64,
-        goalDifference: 35,
+        currentPoints: 67,
+        goalDifference: 38,
         fixtures: [
-            { opponent: "April 3rd: Aston Villa", venue: "Home", result: "" },
             { opponent: "April 6th: Crystal Palace", venue: "Away", result: "" },
             { opponent: "April 13th: Luton Town", venue: "Home", result: "" },
             { opponent: "TBC: Tottenham Hotspur", venue: "Away", result: "" },
@@ -22,10 +21,9 @@ const teams = [
     },
     {
         name: "Liverpool",
-        currentPoints: 67,
-        goalDifference: 40,
+        currentPoints: 70,
+        goalDifference: 42,
         fixtures: [
-            { opponent: "April 4th: Sheffield United", venue: "Home", result: "" },
             { opponent: "April 7th: Manchester United", venue: "Away", result: "" },
             { opponent: "April 14th: Crystal Palace", venue: "Home", result: "" },
             { opponent: "April 21st: Fulham", venue: "Away", result: "" },
@@ -38,10 +36,9 @@ const teams = [
     },
     {
         name: "Arsenal",
-        currentPoints: 65,
-        goalDifference: 46,
+        currentPoints: 68,
+        goalDifference: 48,
         fixtures: [
-            { opponent: "April 3rd: Luton Town", venue: "Home", result: "" },
             { opponent: "April 6th: Brighton and Hove Albion", venue: "Away", result: "" },
             { opponent: "April 14th: Aston Villa", venue: "Home", result: "" },
             { opponent: "April 20th: Wolverhampton Wanderers", venue: "Away", result: "" },
