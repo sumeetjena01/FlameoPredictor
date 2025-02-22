@@ -5,48 +5,42 @@ import './App.css';
 
 const teams = [
     {
-        name: "Manchester City",
-        currentPoints: 67,
-        goalDifference: 38,
-        fixtures: [
-            { opponent: "April 6th: Crystal Palace", venue: "Away", result: "" },
-            { opponent: "April 13th: Luton Town", venue: "Home", result: "" },
-            { opponent: "TBC: Tottenham Hotspur", venue: "Away", result: "" },
-            { opponent: "April 25th: Brighton and Hove Albion", venue: "Away", result: "" },
-            { opponent: "April 28th: Nottingham Forest", venue: "Away", result: "" },
-            { opponent: "May 4th: Wolverhampton Wanderers", venue: "Home", result: "" },
-            { opponent: "May 11th: Fulham", venue: "Away", result: "" },
-            { opponent: "May 19th: West Ham United", venue: "Home", result: "" },
-        ],
-    },
-    {
         name: "Liverpool",
-        currentPoints: 70,
-        goalDifference: 42,
+        currentPoints: 61,
+        goalDifference: 36,
         fixtures: [
-            { opponent: "April 7th: Manchester United", venue: "Away", result: "" },
-            { opponent: "April 14th: Crystal Palace", venue: "Home", result: "" },
-            { opponent: "April 21st: Fulham", venue: "Away", result: "" },
-            { opponent: "April 24th: Everton", venue: "Away", result: "" },
-            { opponent: "April 27th: West Ham United", venue: "Away", result: "" },
-            { opponent: "May 4th: Tottenham Hotspur", venue: "Home", result: "" },
-            { opponent: "May 11th: Aston Villa", venue: "Away", result: "" },
-            { opponent: "May 19th: Wolverhampton Wanderers", venue: "Home", result: "" },
+            { opponent: "February 23rd: Manchester City", venue: "Away", result: "" },
+            { opponent: "February 26th: Newcastle", venue: "Home", result: "" },
+            { opponent: "March 8th: Southampton", venue: "Home", result: "" },
+            { opponent: "April 2nd: Everton", venue: "Home", result: "" },
+            { opponent: "April 5th: Fulham", venue: "Away", result: "" },
+            { opponent: "April 12th: West Ham United", venue: "Home", result: "" },
+            { opponent: "April 19th: Leicester City", venue: "Away", result: "" },
+            { opponent: "April 26th: Tottenham Hotspur", venue: "Home", result: "" },
+            { opponent: "May 3rd: Chelsea", venue: "Away", result: "" },
+            { opponent: "May 10th: Arsenal", venue: "Home", result: "" },
+            { opponent: "May 18th: Brighton and Hove Albion", venue: "Away", result: "" },
+            { opponent: "May 25th: Crystal Palace", venue: "Home", result: "" },
         ],
     },
     {
         name: "Arsenal",
-        currentPoints: 68,
-        goalDifference: 48,
+        currentPoints: 53,
+        goalDifference: 29,
         fixtures: [
-            { opponent: "April 6th: Brighton and Hove Albion", venue: "Away", result: "" },
-            { opponent: "April 14th: Aston Villa", venue: "Home", result: "" },
-            { opponent: "April 20th: Wolverhampton Wanderers", venue: "Away", result: "" },
-            { opponent: "April 23rd: Chelsea", venue: "Home", result: "" },
-            { opponent: "April 28th: Tottenham Hotspur", venue: "Away", result: "" },
-            { opponent: "May 4th: AFC Bournemouth", venue: "Home", result: "" },
-            { opponent: "May 11th: Manchester United", venue: "Away", result: "" },
-            { opponent: "May 19th: Everton", venue: "Home", result: "" },
+            { opponent: "February 22nd: West Ham United", venue: "Home", result: "" },
+            { opponent: "February 26th: Nottingham Forest", venue: "Away", result: "" },
+            { opponent: "March 9th: Manchester United", venue: "Away", result: "" },
+            { opponent: "March 16th: Chelsea", venue: "Home", result: "" },
+            { opponent: "April 1st: Fulham", venue: "Home", result: "" },
+            { opponent: "April 5th: Everton", venue: "Away", result: "" },
+            { opponent: "April 12th: Brentford", venue: "Home", result: "" },
+            { opponent: "April 19th: Ipswich Town", venue: "Away", result: "" },
+            { opponent: "April 26th: Crystal Palce", venue: "Home", result: "" },
+            { opponent: "May 3rd: Bournemouth", venue: "Home", result: "" },
+            { opponent: "May 10th: Liverpool", venue: "Away", result: "" },
+            { opponent: "May 18th: Newcastle", venue: "Home", result: "" },
+            { opponent: "May 18th: Southampton", venue: "Away", result: "" },
         ],
     },
 ];
@@ -142,7 +136,7 @@ const FixturePrediction = () => {
                 }
             }
 
-            setWinnerMessage(`You have picked ${winner.name} to win the 2023/2024 Premier League title!`);
+            setWinnerMessage(`You have picked ${winner.name} to win the 2024/2025 Premier League title!`);
             setIsModalOpen(true); // Open the modal with the winner message
         }
     }, [teamsData]);
