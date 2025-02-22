@@ -119,10 +119,12 @@ const FixturePrediction = () => {
         const allPredicted = teamsData.every(team => team.fixtures.every(fixture => fixture.result));
         if (allPredicted) {
             // Initially sort teams by points then by goal difference
-            let sortedTeams = [...teamsData].sort((a, b) => b.currentPoints - a.currentPoints || b.goalDifference - a.goalDifference);
-
+            let sortedTeams = [...teamsData].sort((a, b) => 
+                (b.currentPoints - a.currentPoints) || (b.goalDifference - a.goalDifference)
+            );
+    
             let winner = sortedTeams[0]; // Assume the top team is the winner
-
+    
             // Check for points tie and apply tiebreaker rules
             if (sortedTeams[0].currentPoints === sortedTeams[1].currentPoints) {
                 // Arsenal tiebreaker
@@ -130,16 +132,19 @@ const FixturePrediction = () => {
                     winner = sortedTeams.find(team => team.name === "Arsenal");
                 }
                 // Liverpool and City tiebreaker
-                else if (sortedTeams[0].name === "Liverpool" && sortedTeams[1].name === "Manchester City" ||
-                    sortedTeams[0].name === "Manchester City" && sortedTeams[1].name === "Liverpool") {
+                else if (
+                    (sortedTeams[0].name === "Liverpool" && sortedTeams[1].name === "Manchester City") ||
+                    (sortedTeams[0].name === "Manchester City" && sortedTeams[1].name === "Liverpool")
+                ) {
                     winner = sortedTeams.find(team => team.name === "Liverpool");
                 }
             }
-
+    
             setWinnerMessage(`You have picked ${winner.name} to win the 2024/2025 Premier League title!`);
             setIsModalOpen(true); // Open the modal with the winner message
         }
     }, [teamsData]);
+    
 
     const updatePointsAndResult = (teamName, fixtureIndex, newResult) => {
         setTeamsData(teamsData.map(team => {
